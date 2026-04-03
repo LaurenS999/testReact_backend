@@ -21,10 +21,8 @@ app.get("/api/notes", (req, res) => {
   });
 });
 
-// ambil PORT dari Railway
 const PORT = process.env.PORT || 5000;
 
-// debug (opsional tapi bagus)
 console.log("ENV PORT:", process.env.PORT);
 
 // jalankan server
