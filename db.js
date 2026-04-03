@@ -1,18 +1,24 @@
 const mysql = require("mysql2");
 
-const db = mysql.createConnection({
-  host     : process.env.DB_HOST,
-  user     : process.env.DB_USER,
-  password : process.env.DB_PASSWORD,
-  database : process.env.DB_NAME,
-  port     : process.env.DB_PORT
+// Gunakan createPool agar koneksi lebih stabil & bisa menangani banyak request
+const db = mysql.createPool({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  database: process.env.MYSQLDATABASE,
+  port: process.env.MYSQLPORT || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect((err) => {
+// Cek koneksi
+db.getConnection((err, connection) => {
   if (err) {
-    console.error("MySQL gagal:", err.message);
+    console.error("MySQL gagal konek:", err.message);
   } else {
-    console.log("MySQL Connected");
+    console.log("MySQL Connected (via Pool)");
+    connection.release(); // Kembalikan koneksi ke pool
   }
 });
 

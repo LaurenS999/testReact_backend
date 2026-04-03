@@ -1,28 +1,28 @@
 require("dotenv").config();
-
 const express = require("express");
 const cors = require("cors");
+const notesRoutes = require("./routes.notes"); // Import routes kamu
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// test route
+// Jalankan koneksi database (opsional tapi bagus untuk cek koneksi saat start)
+require("./db"); 
+
+// Test route
 app.get("/", (req, res) => {
   res.send("API jalan 🚀");
 });
 
-// contoh API
-app.get("/api/notes", (req, res) => {
-  res.json({
-    message: "API Notes berhasil",
-  });
-});
+// 🔥 GUNAKAN ROUTES YANG SUDAH DIBUAT
+app.use("/api/notes", notesRoutes);
 
-// 🔥 PENTING: pakai port 5000 (karena Railway mapping ke 5000)
-const PORT = 5000;
+// 🔥 PERBAIKAN PORT: Railway memberikan port secara dinamis
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, "0.0.0.0", () => {
+  // Pakai backtick (``) agar variabel ${PORT} terbaca
   console.log(`Server jalan di port ${PORT}`);
 });
