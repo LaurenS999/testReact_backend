@@ -1,9 +1,4 @@
-const mysql = require('mysql2');
-console.log("MYSQL_URL:", process.env.MYSQL_URL);
-if (!process.env.MYSQL_URL) {
-  console.error("MYSQL_URL tidak ada!");
-  process.exit(1);
-}
+const mysql = require("mysql2");
 
 const db = mysql.createConnection(process.env.MYSQL_URL);
 
