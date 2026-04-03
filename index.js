@@ -8,20 +8,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔥 WAJIB ADA
+// test route
 app.get("/", (req, res) => {
-  res.send("OK");
+  res.send("API jalan 🚀");
 });
 
-// test API
+// contoh API
 app.get("/api/notes", (req, res) => {
-  res.json({ message: "API jalan" });
+  res.json({
+    message: "API Notes berhasil",
+  });
 });
 
-// 🔥 PORT HARUS 5000 (karena kamu set manual di Railway)
+// 🔥 PENTING: pakai port 5000 (karena Railway mapping ke 5000)
 const PORT = 5000;
 
-// 🔥 WAJIB 0.0.0.0
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server jalan di port ${PORT}`);
 });
