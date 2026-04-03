@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// route test (WAJIB buat cek server hidup)
 app.get("/", (req, res) => {
   res.send("API jalan 🚀");
 });
