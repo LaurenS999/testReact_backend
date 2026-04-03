@@ -1,29 +1,33 @@
 const mysql = require("mysql2");
 
-// Gunakan MYSQL_URL karena paling stabil di Railway
-const connectionString = process.env.MYSQL_URL;
+// 1. Buat Pool (Lebih stabil untuk Railway)
+const db = mysql.createPool(process.env.MYSQL_URL);
 
-if (!connectionString) {
-  console.error("❌ ERROR: Variabel MYSQL_URL tidak ditemukan di Environment!");
-}
-
-const db = mysql.createPool(connectionString || {
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT || 3306,
-});
-
-// Tes koneksi dengan log yang lebih detail
+// 2. CEK KONEKSI (Sama pentingnya dengan db.connect)
 db.getConnection((err, connection) => {
   if (err) {
-    console.error("❌ MySQL gagal konek. Detail Error:");
-    console.error("- Code:", err.code);
-    console.error("- Message:", err.message);
+    console.error("❌ MySQL gagal konek:", err.message);
   } else {
-    console.log("✅ MySQL Connected Successfully!");
-    connection.release();
+    console.log("✅ MySQL Connected (via Pool)");
+    connection.release(); // Sangat penting: kembalikan koneksi ke pool setelah dicek
+  }
+});
+
+// 3. AUTO-CREATE TABLE (Opsional tapi sangat membantu jika belum ada tab Data)
+const createTableQuery = `
+  CREATE TABLE IF NOT EXISTS notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    judul VARCHAR(255) NOT NULL,
+    isi_konten TEXT,
+    tanggal_pembuatan TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+`;
+
+db.query(createTableQuery, (err) => {
+  if (err) {
+    console.error("Gagal buat tabel:", err.message);
+  } else {
+    console.log("✅ Tabel 'notes' siap digunakan");
   }
 });
 
