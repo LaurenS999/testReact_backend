@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const db = process.env.DATABASE_URL;
 const express = require('express');
 const app = express();
