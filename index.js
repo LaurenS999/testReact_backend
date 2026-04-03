@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const notesRoutes = require("./routes.notes"); // Import routes kamu
+const notesRoutes = require("./routes.notes.js");
 
 const app = express();
 
