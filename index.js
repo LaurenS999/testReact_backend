@@ -24,7 +24,6 @@ const PORT = process.env.PORT || 5000;
 
 console.log("ENV PORT:", process.env.PORT);
 
-// jalankan server
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server jalan di port ${PORT}`);
 });
